@@ -3,14 +3,19 @@ from datetime import datetime
 from flask import current_app
 
 def send_simple_message(to, subject, newUser):
-    print('Enviando mensagem (POST)...', flush=True)
     app = current_app
 
-    print('URL:', app.config['API_URL'], flush=True)
-    print('API:', app.config['API_KEY'], flush=True)
-    print('FROM:', app.config['API_FROM'], flush=True)
-    print('TO:', to, flush=True)
-    print('ASSUNTO:', app.config['FLASKY_MAIL_SUBJECT_PREFIX'], flush=True)
+    prontuario = "PT3032515"
+    nome_aluno = "Soraya Gomes da Silva"
+
+    corpo_email = (
+        f"Prontuário: {prontuario}\n"
+        f"Nome: {nome_aluno}\n"
+        f"Novo usuário cadastrado: {newUser}"
+    )
+
+    print('Enviando mensagem (POST)...', flush=True)
+    print('Corpo do e-mail:\n' + corpo_email, flush=True)
 
     resposta = requests.post(
         app.config['API_URL'],
@@ -19,7 +24,7 @@ def send_simple_message(to, subject, newUser):
             "from": app.config['API_FROM'],
             "to": to,
             "subject": app.config['FLASKY_MAIL_SUBJECT_PREFIX'] + ' ' + subject,
-            "text": "Novo usuário cadastrado: " + newUser
+            "text": corpo_email
         }
     )
 
